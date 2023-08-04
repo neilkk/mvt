@@ -16,7 +16,7 @@ class TestViberModule:
     def test_viber(self):
         m = Viber(target_path=get_ios_backup_folder())
         run_module(m)
-        assert len(m.results) == 1
+        assert len(m.results) == 2
         assert len(m.timeline) == 2  # Viber received and read events.
         assert len(m.detected) == 0
 
@@ -25,7 +25,7 @@ class TestViberModule:
         ind = Indicators(log=logging.getLogger())
         ind.parse_stix2(indicator_file)
         # Adds a file that exists in the manifest.
-        ind.ioc_collections[0]["domains"].append("badbadbad.example.org")
+        ind.ioc_collections[0]["domains"].append("kingdom-deals.com")
         m.indicators = ind
         run_module(m)
         assert len(m.detected) == 1

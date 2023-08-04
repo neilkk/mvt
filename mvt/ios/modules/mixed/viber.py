@@ -76,10 +76,8 @@ class Viber(IOSExtraction):
         # and links.
         cur.execute(
             """
-            SELECT
-                ZVIBERMESSAGE.*,
-            FROM ZVIBERMESSAGE
-        """
+            SELECT ZVIBERMESSAGE.* FROM ZVIBERMESSAGE
+            """
         )
         names = [description[0] for description in cur.description]
 
@@ -89,9 +87,7 @@ class Viber(IOSExtraction):
                 message[names[index]] = value
 
             message["isodate"] = convert_mactime_to_iso(message.get("ZDATE"))
-            message["ZVIBERMESSAGE"] = (
-                message["ZVIBERMESSAGE"] if message["ZVIBERMESSAGE"] else ""
-            )
+            message["ZTEXT"] if message["ZTEXT"] else ""
 
             # Extract links from the Viber message. URLs can be stored in
             # multiple fields/columns.
@@ -106,6 +102,7 @@ class Viber(IOSExtraction):
 
             # Remove WhatsApp internal media URLs.
             filtered_links = []
+
             for link in message_links:
                 if not (
                     link.startswith("https://mmg-fna.viber.net/")
